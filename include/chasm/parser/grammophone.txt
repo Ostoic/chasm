@@ -1,0 +1,21 @@
+B -> I ; B_maybe .
+
+B_maybe -> B | .
+
+I -> NI | UI | BI .
+
+BI -> bo BI_arg .
+
+BI_arg -> [ num_or_r ] , num_or_r
+| num_or_r , BI_arg2 .
+
+BI_arg2 -> [ num_or_r ]
+| num_or_r .
+
+UI -> uo UI_arg .
+NI -> no .
+
+UI_arg -> num_or_r 
+| [ num_or_r ] .
+
+num_or_r -> num | r .

@@ -1,0 +1,5 @@
+
+*.db
+msvc/.vs/chasm/v16/.suo
+*.opendb
+*.ipch
