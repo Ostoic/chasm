@@ -1,17 +1,17 @@
 #pragma once
 
 #include <sprout/range/range_container.hpp>
-#include <sprout/iterator/filter_iterator.hpp>
-#include <sprout/iterator/transform_iterator.hpp>
 
 #include "split_iterator.hpp"
-#include "string_helpers.hpp"
+#include "detail/string_helpers.hpp"
 
 namespace chasm::lex
 {
 	struct capture
 	{
-		constexpr capture(const char* chars) : captures(chars) {}
+		explicit constexpr capture(const char* chars = "")
+			: captures(chars)
+		{}
 
 		constexpr bool operator()(const char c) const noexcept
 		{
@@ -30,15 +30,21 @@ namespace chasm::lex
 	using splitter = sprout::range::range_container<split_iterator<String, Skipper, Capture>>;
 
 	/// @brief Split a string into words separated by two types of delimiters.
+	/// @param string is the string to split
 	/// @param skipper is a predicate describing the skipped delimiters
 	/// @param capture is a predicate describing the captured delimiters
 	template <class String, class Skipper = skip, class CaptureFn = capture>
-	constexpr auto split(const String string, Skipper skipper = whitespace_skipper, CaptureFn capture = empty_capture) noexcept
+	constexpr auto split(
+		const String& string,
+		const Skipper skipper = whitespace_skipper,
+		const CaptureFn capture = empty_capture) noexcept
 	{
-		const auto string_view = lex::make_string_view(string);
+		using split_it = split_iterator<std::string_view, Skipper, CaptureFn>;
+
+		const auto string_view = detail::make_string_view(string);
 		return sprout::range::range_container{
-			split_iterator{string_view, skipper, capture},
-			split_iterator{string_view, std::end(string_view), skipper, capture}
+			split_it{string_view, std::begin(string_view), skipper, capture},
+			split_it{string_view}
 		};
 	}
 

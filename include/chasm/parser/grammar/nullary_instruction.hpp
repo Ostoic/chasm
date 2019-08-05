@@ -3,7 +3,7 @@
 #include <array>
 #include "../../lex/token.hpp"
 
-namespace chasm::parser::grammar
+namespace chasm::parse::grammar
 {
 	// nullary_instruction -> nullary_opcode .
 	struct nullary_instruction

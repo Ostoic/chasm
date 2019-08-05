@@ -2,7 +2,7 @@
 
 #include "instruction.hpp"
 
-namespace chasm::parser::grammar
+namespace chasm::parse::grammar
 {
 	namespace detail
 	{

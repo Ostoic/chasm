@@ -2,7 +2,7 @@
 
 #include "binary_argument.hpp"
 
-namespace chasm::parser::grammar
+namespace chasm::parse::grammar
 {
 	// binary_instruction -> binary_opcode binary_argument .
 	struct binary_instruction

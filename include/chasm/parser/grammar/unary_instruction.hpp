@@ -2,7 +2,7 @@
 
 #include "unary_argument.hpp"
 
-namespace chasm::parser::grammar
+namespace chasm::parse::grammar
 {
 	// unary_instruction -> unary_opcode unary_argument . 
 	struct unary_instruction

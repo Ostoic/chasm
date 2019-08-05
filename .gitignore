@@ -3,3 +3,15 @@
 msvc/.vs/chasm/v16/.suo
 *.opendb
 *.ipch
+*.pdb
+*.idb
+*.tlog
+*.ipdb
+*.exe
+*.iobj
+*.ilk
+*.log
+msvc/.vs/*
+msvc/x64/*
+msvc/Debug/*
+msvc/Release/*

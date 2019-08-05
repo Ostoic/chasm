@@ -1,3 +1,84 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="chasm">
+      <UniqueIdentifier>{3f1c3206-07ad-466d-803a-b1e523d632af}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="chasm\lex">
+      <UniqueIdentifier>{54a8969d-09c4-432d-90b2-ea64ee7cc155}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="chasm\lex\detail">
+      <UniqueIdentifier>{301438e4-5fd0-4f18-9fcc-57763dd2c4ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="chasm\parse">
+      <UniqueIdentifier>{bb091a94-9408-4bc4-b1a9-09593b37fbf3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="chasm\parse\grammar">
+      <UniqueIdentifier>{04ed342f-926e-42ea-9749-3a05d2ad30e1}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\include\chasm\lex\split_iterator.hpp">
+      <Filter>chasm\lex</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\chasm\lex\token.hpp">
+      <Filter>chasm\lex</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\chasm\lex\lexer.hpp">
+      <Filter>chasm\lex</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\chasm\lex\patterns.hpp">
+      <Filter>chasm\lex</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\chasm\lex\split.hpp">
+      <Filter>chasm\lex</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\chasm\parser\productions.hpp">
+      <Filter>chasm\parse</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\chasm\parser\grammar\binary_argument.hpp">
+      <Filter>chasm\parse\grammar</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\chasm\parser\grammar\binary_instruction.hpp">
+      <Filter>chasm\parse\grammar</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\chasm\parser\grammar\first_follow.hpp">
+      <Filter>chasm\parse\grammar</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\chasm\parser\grammar\instruction.hpp">
+      <Filter>chasm\parse\grammar</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\chasm\parser\grammar\nullary_instruction.hpp">
+      <Filter>chasm\parse\grammar</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\chasm\parser\grammar\program.hpp">
+      <Filter>chasm\parse\grammar</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\chasm\parser\grammar\register_or_number.hpp">
+      <Filter>chasm\parse\grammar</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\chasm\parser\grammar\unary_argument.hpp">
+      <Filter>chasm\parse\grammar</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\chasm\parser\grammar\unary_instruction.hpp">
+      <Filter>chasm\parse\grammar</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\chasm\lex\detail\type_traits.hpp">
+      <Filter>chasm\lex\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\chasm\lex\detail\string_helpers.hpp">
+      <Filter>chasm\lex\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\chasm\parser\parser.hpp">
+      <Filter>chasm\parse</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\include\chasm\parser\grammophone.txt">
+      <Filter>chasm\parse</Filter>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp" />
+  </ItemGroup>
 </Project>

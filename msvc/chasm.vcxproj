@@ -18,6 +18,32 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\include\chasm\lex\detail\string_helpers.hpp" />
+    <ClInclude Include="..\include\chasm\lex\detail\type_traits.hpp" />
+    <ClInclude Include="..\include\chasm\lex\lexer.hpp" />
+    <ClInclude Include="..\include\chasm\lex\patterns.hpp" />
+    <ClInclude Include="..\include\chasm\lex\split.hpp" />
+    <ClInclude Include="..\include\chasm\lex\split_iterator.hpp" />
+    <ClInclude Include="..\include\chasm\lex\token.hpp" />
+    <ClInclude Include="..\include\chasm\parser\grammar\binary_argument.hpp" />
+    <ClInclude Include="..\include\chasm\parser\grammar\binary_instruction.hpp" />
+    <ClInclude Include="..\include\chasm\parser\grammar\first_follow.hpp" />
+    <ClInclude Include="..\include\chasm\parser\grammar\instruction.hpp" />
+    <ClInclude Include="..\include\chasm\parser\grammar\nullary_instruction.hpp" />
+    <ClInclude Include="..\include\chasm\parser\grammar\program.hpp" />
+    <ClInclude Include="..\include\chasm\parser\grammar\register_or_number.hpp" />
+    <ClInclude Include="..\include\chasm\parser\grammar\unary_argument.hpp" />
+    <ClInclude Include="..\include\chasm\parser\grammar\unary_instruction.hpp" />
+    <ClInclude Include="..\include\chasm\parser\parser.hpp" />
+    <ClInclude Include="..\include\chasm\parser\productions.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\include\chasm\parser\grammophone.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{9E5B1797-562E-4459-AEE6-571692B14D65}</ProjectGuid>
@@ -77,7 +103,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);C:\Users\dinne\Documents\Library</IncludePath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);C:\Users\dinne\Documents\Library\include;</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -86,7 +112,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);C:\Users\dinne\Documents\Library;</IncludePath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);C:\Users\dinne\Documents\Library\include;</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -97,6 +123,7 @@
       <PreprocessorDefinitions>_SILENCE_ALL_CXX17_DEPRECATION_WARNINGS;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpplatest</LanguageStandard>
+      <AdditionalOptions>/WL %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -130,6 +157,7 @@
       <PreprocessorDefinitions>_SILENCE_ALL_CXX17_DEPRECATION_WARNINGS;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpplatest</LanguageStandard>
+      <AdditionalOptions>/WL %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -157,28 +185,6 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClInclude Include="..\include\chasm\lex\patterns.hpp" />
-    <ClInclude Include="..\include\chasm\lex\string_helpers.hpp" />
-    <ClInclude Include="..\include\chasm\lex\lexer.hpp" />
-    <ClInclude Include="..\include\chasm\lex\token.hpp" />
-    <ClInclude Include="..\include\chasm\lex\split.hpp" />
-    <ClInclude Include="..\include\chasm\parser\grammar\binary_argument.hpp" />
-    <ClInclude Include="..\include\chasm\parser\grammar\binary_instruction.hpp" />
-    <ClInclude Include="..\include\chasm\parser\grammar\first_follow.hpp" />
-    <ClInclude Include="..\include\chasm\parser\grammar\instruction.hpp" />
-    <ClInclude Include="..\include\chasm\parser\grammar\nullary_instruction.hpp" />
-    <ClInclude Include="..\include\chasm\parser\grammar\program.hpp" />
-    <ClInclude Include="..\include\chasm\parser\grammar\register_or_number.hpp" />
-    <ClInclude Include="..\include\chasm\parser\grammar\unary_argument.hpp" />
-    <ClInclude Include="..\include\chasm\parser\grammar\unary_instruction.hpp" />
-    <ClInclude Include="..\include\chasm\parser\parser.hpp" />
-    <ClInclude Include="..\include\chasm\parser\productions.hpp" />
-    <ClInclude Include="..\include\chasm\lex\split_iterator.hpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="main.cpp" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

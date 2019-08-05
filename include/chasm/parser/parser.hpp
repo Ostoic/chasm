@@ -3,7 +3,7 @@
 #include "../lex/lexer.hpp"
 #include "grammar/program.hpp"
 
-namespace chasm::parser
+namespace chasm::parse
 {
 	template <class String>
 	class parser

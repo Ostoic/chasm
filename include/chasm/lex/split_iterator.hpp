@@ -1,11 +1,11 @@
 #pragma once
 #include <iterator>
-#include <array>
 #include <sprout/iterator.hpp>
-#include <sprout/algorithm/find_if.hpp>
 
 namespace chasm::lex
 {
+	struct capture;
+
 	template <class StringView, class Skipper, class CaptureFn>
 	class split_iterator
 		: sprout::iterator<
@@ -29,25 +29,24 @@ namespace chasm::lex
 		>;
 
 	public:
-		constexpr split_iterator(
-			const string_view string, 
-			Skipper skip = {}, CaptureFn capture = {}
-		) noexcept
-			: split_iterator(string, std::begin(string), skip, capture)
-		{}
-
-		constexpr split_iterator(
-			const string_view string, const typename string_view::iterator start, 
-			Skipper skip = {}, CaptureFn capture = {}
-		) noexcept
-			: string_(string), current_(start)
-			, skip_(skip), capture_(capture)
+		constexpr split_iterator(const string_view string) noexcept
+			: split_iterator(string, std::end(string), Skipper{}, CaptureFn{})
 		{}
 
 		constexpr split_iterator(const split_iterator& other) noexcept
-			: string_(other.string_), current_(other.current_)
-			, skip_(other.skip_), capture_(other.capture_)
+			: split_iterator(other.string_, other.current_, other.skip_, other.capture_)
 		{}
+
+		constexpr split_iterator(
+			const string_view string, const typename string_view::iterator start,
+			const Skipper skip, const CaptureFn capture
+		) noexcept
+			: current_{start}, string_(string)
+			, skip_(skip), capture_(capture)
+		{
+			if (current_ != std::end(string) && skip(*current_))
+				current_ = this->full_skip(current_);
+		}
 
 		constexpr split_iterator& operator=(const split_iterator& other) noexcept
 		{
@@ -63,7 +62,7 @@ namespace chasm::lex
 			const auto current_offset = std::distance(std::begin(string_), current_);
 
 			// If the current iterator points to a captured string, then return it
-			if (capture_(*current_))
+			if (this->capture(*current_))
 				return string_.substr(current_offset, 1);
 
 			// Skip characters, then find the end of the word
@@ -75,7 +74,8 @@ namespace chasm::lex
 
 		constexpr split_iterator& operator++() noexcept
 		{
-			if (capture_(*current_))
+			// If the current character is captured, then skip to the next
+			if (this->capture(*current_))
 			{
 				++current_;
 				current_ = this->full_skip(current_);
@@ -105,48 +105,59 @@ namespace chasm::lex
 			sprout::swap(capture_, other.capture_);
 		}
 
-		template <class SV, class S, class C>
-		friend constexpr bool operator==(const split_iterator<SV, S, C>& lhs, const split_iterator<SV, S, C>& rhs)
+		friend constexpr bool operator==(const split_iterator& lhs, const split_iterator& rhs)
 		{
 			return lhs.current_ == rhs.current_;
 		}
 
-		template <class SV, class S, class C>
-		friend constexpr bool operator<(const split_iterator<SV, S, C>& lhs, const split_iterator<SV, S, C>& rhs)
+		friend constexpr bool operator<(const split_iterator& lhs, const split_iterator& rhs)
 		{
 			return lhs.current_ < rhs.current_;
 		}
 
 	private:
 		typename value_type::iterator current_;
-		value_type string_;
+		const value_type string_;
 
-		Skipper skip_;
-		CaptureFn capture_;
+		const Skipper skip_;
+		const CaptureFn capture_;
 
 	private:
-		template <class RandomIt>
+
+		[[nodiscard]]
+		constexpr bool skip(const char c) const noexcept
+		{
+			return (skip_)(c);
+		}
+
+		[[nodiscard]]
+		constexpr bool capture(const char c) const noexcept
+		{
+			return (capture_)(c);
+		}
+
+		template <class RandomIt> [[nodiscard]]
 		constexpr auto full_skip(RandomIt it) const
 		{
 			// skip whitespace characters
-			while (it != std::end(string_) && skip_(*it))
+			while (it != std::end(string_) && this->skip(*it))
 				std::advance(it, 1);
 
 			return it;
 		}
 
-		template <class RandomIt>
+		template <class RandomIt> [[nodiscard]]
 		constexpr auto word_skip(RandomIt it) const
 		{
 			// find the end of the current word
-			while (it != std::end(string_) && !skip_(*it) && !capture_(*it))
+			while (it != std::end(string_) && !this->skip(*it) && !this->capture(*it))
 				std::advance(it, 1);
 
 			return it;
 		}
 
 	public:
-		constexpr void swap(split_iterator& lhs, split_iterator& rhs) noexcept
+		static constexpr void swap(split_iterator& lhs, split_iterator& rhs) noexcept
 		{
 			lhs.swap(rhs);
 		}

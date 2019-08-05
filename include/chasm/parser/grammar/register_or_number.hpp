@@ -3,7 +3,7 @@
 #include <array>
 #include "../../lex/token.hpp"
 
-namespace chasm::parser::grammar
+namespace chasm::parse::grammar
 {
 	// register_or_number -> r | num .
 	struct register_or_number

@@ -2,7 +2,7 @@
 
 #include "register_or_number.hpp"
 
-namespace chasm::parser::grammar
+namespace chasm::parse::grammar
 {
 	// binary_argument -> [ r_or_num ] | r_or_num .
 	struct binary_argument2

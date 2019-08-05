@@ -5,87 +5,103 @@
 #include <sprout/iterator/to_lower_iterator.hpp>
 
 #include "token.hpp"
-#include "string_helpers.hpp"
+#include "detail/string_helpers.hpp"
 
-#define CHASM_MAKE_LEX_PATTERN(value, symbol) std::pair{ value,  token{ symbol,	value} }
+#define CHASM_LEX_CHECK_PATTERN(string, tokens)\
+	for (const auto& token : tokens) \
+		if (detail::string_equals(token.value, string))\
+			return token;
 
 namespace chasm::lex
 {
-	constexpr auto patterns = std::array{
-		CHASM_MAKE_LEX_PATTERN("mov", symbol::binary_opcode),
-		CHASM_MAKE_LEX_PATTERN("movzx", symbol::binary_opcode),
-		CHASM_MAKE_LEX_PATTERN("movsxd", symbol::binary_opcode),
-		CHASM_MAKE_LEX_PATTERN("movsb", symbol::binary_opcode),
-		CHASM_MAKE_LEX_PATTERN("lea", symbol::binary_opcode),
+	constexpr auto binary_tokens = std::array{
+		token{symbol::binary_opcode, "mov"},
+		token{symbol::binary_opcode, "movzx"},
+		token{symbol::binary_opcode, "movsxd"},
+		token{symbol::binary_opcode, "movsb"},
+		token{symbol::binary_opcode, "lea"},
 
-		CHASM_MAKE_LEX_PATTERN("test", symbol::binary_opcode),
-		CHASM_MAKE_LEX_PATTERN("cmp", symbol::binary_opcode),
-		CHASM_MAKE_LEX_PATTERN("call", symbol::unary_opcode),
-		CHASM_MAKE_LEX_PATTERN("jmp", symbol::unary_opcode),
-		CHASM_MAKE_LEX_PATTERN("je", symbol::unary_opcode),
-		CHASM_MAKE_LEX_PATTERN("jne", symbol::unary_opcode),
-		CHASM_MAKE_LEX_PATTERN("jle", symbol::unary_opcode),
-		CHASM_MAKE_LEX_PATTERN("jnl", symbol::unary_opcode),
+		token{symbol::binary_opcode, "test"},
+		token{symbol::binary_opcode, "cmp"},
 
-		CHASM_MAKE_LEX_PATTERN("and", symbol::binary_opcode),
-		CHASM_MAKE_LEX_PATTERN("or", symbol::binary_opcode),
-		CHASM_MAKE_LEX_PATTERN("xor", symbol::binary_opcode),
+		token{symbol::binary_opcode, "and"},
+		token{symbol::binary_opcode, "or"},
+		token{symbol::binary_opcode, "xor"},
 
-		CHASM_MAKE_LEX_PATTERN("add", symbol::binary_opcode),
-		CHASM_MAKE_LEX_PATTERN("sub", symbol::binary_opcode),
-		CHASM_MAKE_LEX_PATTERN("mul", symbol::unary_opcode),
-		CHASM_MAKE_LEX_PATTERN("inc", symbol::unary_opcode),
-		CHASM_MAKE_LEX_PATTERN("dec", symbol::unary_opcode),
+		token{symbol::binary_opcode, "add"},
+		token{symbol::binary_opcode, "sub"}
+	};
 
-		CHASM_MAKE_LEX_PATTERN("push", symbol::unary_opcode),
-		CHASM_MAKE_LEX_PATTERN("pop", symbol::unary_opcode),
-		CHASM_MAKE_LEX_PATTERN("pushad", symbol::nullary_opcode),
-		CHASM_MAKE_LEX_PATTERN("pushfd", symbol::nullary_opcode),
-		CHASM_MAKE_LEX_PATTERN("popfd", symbol::nullary_opcode),
-		CHASM_MAKE_LEX_PATTERN("popfd", symbol::nullary_opcode),
-		CHASM_MAKE_LEX_PATTERN("ret", symbol::unary_opcode),
-		CHASM_MAKE_LEX_PATTERN("nop", symbol::nullary_opcode),
+	constexpr auto unary_tokens = std::array{
+		token{symbol::unary_opcode, "call"},
+		token{symbol::unary_opcode, "jmp"},
+		token{symbol::unary_opcode, "je"},
+		token{symbol::unary_opcode, "jne"},
+		token{symbol::unary_opcode, "jle"},
+		token{symbol::unary_opcode, "jnl"},
+		token{symbol::unary_opcode, "mul"},
+		token{symbol::unary_opcode, "inc"},
+		token{symbol::unary_opcode, "dec"},
 
+		token{symbol::unary_opcode, "push"},
+		token{symbol::unary_opcode, "pop"},
+
+		token{symbol::unary_opcode, "ret"},
+	};
+
+	constexpr auto nullary_tokens = std::array{
+		token{symbol::nullary_opcode, "pushad"},
+		token{symbol::nullary_opcode, "pushfd"},
+		token{symbol::nullary_opcode, "popfd"},
+		token{symbol::nullary_opcode, "popfd"},
+		token{symbol::nullary_opcode, "nop"},
+	};
+
+	constexpr auto register_tokens = std::array{
 		// instruction pointer
-		CHASM_MAKE_LEX_PATTERN("eip", symbol::reg),
+		token{symbol::reg, "eip"},
 
 		// 32-bit registers
-		CHASM_MAKE_LEX_PATTERN("eax", symbol::reg),
-		CHASM_MAKE_LEX_PATTERN("ebx", symbol::reg),
-		CHASM_MAKE_LEX_PATTERN("ecx", symbol::reg),
-		CHASM_MAKE_LEX_PATTERN("edx", symbol::reg),
-		CHASM_MAKE_LEX_PATTERN("edi", symbol::reg),
-		CHASM_MAKE_LEX_PATTERN("esi", symbol::reg),
-		CHASM_MAKE_LEX_PATTERN("ebp", symbol::reg),
-		CHASM_MAKE_LEX_PATTERN("esp", symbol::reg),
+		token{symbol::reg, "eax"},
+		token{symbol::reg, "ebx"},
+		token{symbol::reg, "ecx"},
+		token{symbol::reg, "edx"},
+		token{symbol::reg, "edi"},
+		token{symbol::reg, "esi"},
+		token{symbol::reg, "ebp"},
+		token{symbol::reg, "esp"},
 
 
 		// 16-bit registers
-		CHASM_MAKE_LEX_PATTERN("ax", symbol::reg),
-		CHASM_MAKE_LEX_PATTERN("bx", symbol::reg),
-		CHASM_MAKE_LEX_PATTERN("cx", symbol::reg),
-		CHASM_MAKE_LEX_PATTERN("dx", symbol::reg),
-		CHASM_MAKE_LEX_PATTERN("di", symbol::reg),
-		CHASM_MAKE_LEX_PATTERN("si", symbol::reg),
-		CHASM_MAKE_LEX_PATTERN("bp", symbol::reg),
-		CHASM_MAKE_LEX_PATTERN("sp", symbol::reg),
+		token{symbol::reg, "ax"},
+		token{symbol::reg, "bx"},
+		token{symbol::reg, "cx"},
+		token{symbol::reg, "dx"},
+		token{symbol::reg, "di"},
+		token{symbol::reg, "si"},
+		token{symbol::reg, "bp"},
+		token{symbol::reg, "sp"},
+	};
 
 		// terminals
-		CHASM_MAKE_LEX_PATTERN(",", symbol::comma),
-		CHASM_MAKE_LEX_PATTERN(";", symbol::semicolon),
-		CHASM_MAKE_LEX_PATTERN("[", symbol::open_bracket),
-		CHASM_MAKE_LEX_PATTERN("]", symbol::close_bracket),
+	constexpr auto terminal_tokens = std::array{
+		token{symbol::comma, ","},
+		token{symbol::semicolon, ";"},
+		token{symbol::open_bracket, "["},
+		token{symbol::close_bracket, "]"},
 	};
 
 	template <class String>
 	constexpr sprout::optional<token> match_pattern(const String& string) noexcept
 	{
-		for (const auto& pattern : patterns)
-			if (lex::string_equals(pattern.first, string))
-				return pattern.second;
+		CHASM_LEX_CHECK_PATTERN(string, binary_tokens);
+		CHASM_LEX_CHECK_PATTERN(string, unary_tokens);
+		CHASM_LEX_CHECK_PATTERN(string, nullary_tokens);
+		CHASM_LEX_CHECK_PATTERN(string, register_tokens);
+		CHASM_LEX_CHECK_PATTERN(string, terminal_tokens);
 
-		if (lex::is_hex_number(string))
-			return token{ lex::symbol::number, string };
+		if (detail::is_hex_number(string))
+			return token{lex::symbol::number, string};
 
 		return {};
 	}

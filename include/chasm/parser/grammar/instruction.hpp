@@ -6,7 +6,7 @@
 #include "binary_instruction.hpp"
 #include "first_follow.hpp"
 
-namespace chasm::parser::grammar
+namespace chasm::parse::grammar
 {
 	// instruction -> nullary_instruction | unary_instruction | binary_instruction .
 	struct instruction

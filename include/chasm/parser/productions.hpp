@@ -1,6 +1,6 @@
 #pragma once
 
 
-namespace chasm::parser::grammar
+namespace chasm::parse::grammar
 {
 }
