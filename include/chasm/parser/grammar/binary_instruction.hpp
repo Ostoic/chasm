@@ -15,6 +15,9 @@ namespace chasm::parse::grammar
 			lex::symbol::semicolon
 		};
 
+		static constexpr auto derivation =
+			lex::symbol::binary_opcode + binary_argument{};
+
 		template <class Lexer>
 		static constexpr void derive(Lexer& lexer) noexcept
 		{

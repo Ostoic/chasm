@@ -8,7 +8,7 @@ namespace chasm::parse::grammar
 	struct binary_argument2
 	{
 		static constexpr auto first = std::array{
-			lex::symbol::reg,
+			lex::symbol::registr,
 			lex::symbol::number,
 			lex::symbol::open_bracket,
 		};
@@ -36,7 +36,7 @@ namespace chasm::parse::grammar
 	struct binary_argument
 	{
 		static constexpr auto first = std::array{
-			lex::symbol::reg,
+			lex::symbol::registr,
 			lex::symbol::number,
 			lex::symbol::open_bracket,
 		};
@@ -55,12 +55,14 @@ namespace chasm::parse::grammar
 				lexer.expect(lex::symbol::close_bracket);
 				lexer.expect(lex::symbol::comma);
 				register_or_number::derive(lexer);
+				// semantic action
 			}
 			else
 			{
 				register_or_number::derive(lexer);
 				lexer.expect(lex::symbol::comma);
 				binary_argument2::derive(lexer);
+				// semantic action
 			}
 		}
 	};

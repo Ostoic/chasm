@@ -2,12 +2,12 @@
 
 #include <array>
 #include <sprout/optional.hpp>
-#include <sprout/iterator/to_lower_iterator.hpp>
 
 #include "token.hpp"
 #include "detail/string_helpers.hpp"
+#include "detail/is_variable.hpp"
 
-#define CHASM_LEX_CHECK_PATTERN(string, tokens)\
+#define CHASM_LEX_FIND_TOKEN(string, tokens)\
 	for (const auto& token : tokens) \
 		if (detail::string_equals(token.value, string))\
 			return token;
@@ -29,7 +29,9 @@ namespace chasm::lex
 		token{symbol::binary_opcode, "xor"},
 
 		token{symbol::binary_opcode, "add"},
-		token{symbol::binary_opcode, "sub"}
+		token{symbol::binary_opcode, "sub"},
+		token{symbol::binary_opcode, "shl"},
+		token{symbol::binary_opcode, "shr"},
 	};
 
 	constexpr auto unary_tokens = std::array{
@@ -52,57 +54,66 @@ namespace chasm::lex
 	constexpr auto nullary_tokens = std::array{
 		token{symbol::nullary_opcode, "pushad"},
 		token{symbol::nullary_opcode, "pushfd"},
-		token{symbol::nullary_opcode, "popfd"},
+		token{symbol::nullary_opcode, "popad"},
 		token{symbol::nullary_opcode, "popfd"},
 		token{symbol::nullary_opcode, "nop"},
 	};
 
 	constexpr auto register_tokens = std::array{
 		// instruction pointer
-		token{symbol::reg, "eip"},
+		token{symbol::registr, "eip"},
 
 		// 32-bit registers
-		token{symbol::reg, "eax"},
-		token{symbol::reg, "ebx"},
-		token{symbol::reg, "ecx"},
-		token{symbol::reg, "edx"},
-		token{symbol::reg, "edi"},
-		token{symbol::reg, "esi"},
-		token{symbol::reg, "ebp"},
-		token{symbol::reg, "esp"},
-
+		token{symbol::registr, "eax"},
+		token{symbol::registr, "ebx"},
+		token{symbol::registr, "ecx"},
+		token{symbol::registr, "edx"},
+		token{symbol::registr, "edi"},
+		token{symbol::registr, "esi"},
+		token{symbol::registr, "ebp"},
+		token{symbol::registr, "esp"},
 
 		// 16-bit registers
-		token{symbol::reg, "ax"},
-		token{symbol::reg, "bx"},
-		token{symbol::reg, "cx"},
-		token{symbol::reg, "dx"},
-		token{symbol::reg, "di"},
-		token{symbol::reg, "si"},
-		token{symbol::reg, "bp"},
-		token{symbol::reg, "sp"},
+		token{symbol::registr, "ax"},
+		token{symbol::registr, "bx"},
+		token{symbol::registr, "cx"},
+		token{symbol::registr, "dx"},
+		token{symbol::registr, "di"},
+		token{symbol::registr, "si"},
+		token{symbol::registr, "bp"},
+		token{symbol::registr, "sp"},
 	};
 
-		// terminals
+	// terminals
 	constexpr auto terminal_tokens = std::array{
 		token{symbol::comma, ","},
 		token{symbol::semicolon, ";"},
 		token{symbol::open_bracket, "["},
 		token{symbol::close_bracket, "]"},
+		token{symbol::open_brace, "{"},
+		token{symbol::close_brace, "}"},
+		token{symbol::variable, "{}[];,"}, // Use detail::is_variable instead of this
 	};
 
 	template <class String>
-	constexpr sprout::optional<token> match_pattern(const String& string) noexcept
+	constexpr token match_token(const String& string)
 	{
-		CHASM_LEX_CHECK_PATTERN(string, binary_tokens);
-		CHASM_LEX_CHECK_PATTERN(string, unary_tokens);
-		CHASM_LEX_CHECK_PATTERN(string, nullary_tokens);
-		CHASM_LEX_CHECK_PATTERN(string, register_tokens);
-		CHASM_LEX_CHECK_PATTERN(string, terminal_tokens);
+		if (detail::is_variable(string))
+			return token{
+				lex::symbol::variable,
+				detail::make_string_view(string).substr(1, detail::string_length(string) - 2)
+		};
+
+		CHASM_LEX_FIND_TOKEN(string, binary_tokens);
+		CHASM_LEX_FIND_TOKEN(string, unary_tokens);
+		CHASM_LEX_FIND_TOKEN(string, nullary_tokens);
+		CHASM_LEX_FIND_TOKEN(string, register_tokens);
+		CHASM_LEX_FIND_TOKEN(string, terminal_tokens);
 
 		if (detail::is_hex_number(string))
 			return token{lex::symbol::number, string};
 
-		return {};
+		else
+			return token{lex::symbol::end, string};
 	}
 }

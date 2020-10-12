@@ -15,3 +15,4 @@ msvc/.vs/*
 msvc/x64/*
 msvc/Debug/*
 msvc/Release/*
+msvc/a.out

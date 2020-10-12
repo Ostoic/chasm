@@ -10,7 +10,7 @@ namespace chasm::parse::grammar
 		static constexpr auto first = std::array{
 			lex::symbol::open_bracket,
 			lex::symbol::number,
-			lex::symbol::reg,
+			lex::symbol::registr,
 		};
 
 		static constexpr auto follow = std::array{

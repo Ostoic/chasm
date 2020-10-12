@@ -23,8 +23,9 @@ namespace chasm::lex
 
 	using skip = capture;
 
-	constexpr capture empty_capture{ "" };
-	constexpr skip whitespace_skipper{ " \t\r\n\b" };
+	constexpr auto empty_capture = capture{""};
+	constexpr auto whitespace_skipper = skip{" \t\r\n\b"};
+	constexpr auto asm_capture = chasm::lex::capture{":;,[]+-*"};
 
 	template <class String = std::string_view, class Skipper = skip, class Capture = capture>
 	using splitter = sprout::range::range_container<split_iterator<String, Skipper, Capture>>;
@@ -37,7 +38,7 @@ namespace chasm::lex
 	constexpr auto split(
 		const String& string,
 		const Skipper skipper = whitespace_skipper,
-		const CaptureFn capture = empty_capture) noexcept
+		const CaptureFn capture = asm_capture) noexcept
 	{
 		using split_it = split_iterator<std::string_view, Skipper, CaptureFn>;
 

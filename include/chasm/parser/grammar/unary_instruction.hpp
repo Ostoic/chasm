@@ -4,7 +4,7 @@
 
 namespace chasm::parse::grammar
 {
-	// unary_instruction -> unary_opcode unary_argument . 
+	// unary_instruction -> unary_opcode unary_argument .
 	struct unary_instruction
 	{
 		static constexpr auto first = std::array{

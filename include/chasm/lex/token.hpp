@@ -7,18 +7,21 @@ namespace chasm::lex
 {
 	enum class symbol
 	{
-		nullary_opcode,
-		unary_opcode,
 		binary_opcode,
+		unary_opcode,
+		nullary_opcode,
 
-		number, reg,
-		open_bracket, close_bracket, comma,
-		semicolon, end
+		number, registr,
+		open_bracket, close_bracket,
+		open_brace, close_brace,
+		variable,
+		comma, semicolon,
+		end
 	};
 
 	struct token
 	{
-		lex::symbol symbol;
-		std::string_view value;
+		lex::symbol symbol = symbol::end;
+		std::string_view value = "";
 	};
 }

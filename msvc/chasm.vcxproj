@@ -19,13 +19,16 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\include\chasm\chasm.hpp" />
+    <ClInclude Include="..\include\chasm\lex\detail\is_variable.hpp" />
     <ClInclude Include="..\include\chasm\lex\detail\string_helpers.hpp" />
     <ClInclude Include="..\include\chasm\lex\detail\type_traits.hpp" />
     <ClInclude Include="..\include\chasm\lex\lexer.hpp" />
-    <ClInclude Include="..\include\chasm\lex\patterns.hpp" />
+    <ClInclude Include="..\include\chasm\lex\match_token.hpp" />
     <ClInclude Include="..\include\chasm\lex\split.hpp" />
     <ClInclude Include="..\include\chasm\lex\split_iterator.hpp" />
     <ClInclude Include="..\include\chasm\lex\token.hpp" />
+    <ClInclude Include="..\include\chasm\parser\ebnf.hpp" />
     <ClInclude Include="..\include\chasm\parser\grammar\binary_argument.hpp" />
     <ClInclude Include="..\include\chasm\parser\grammar\binary_instruction.hpp" />
     <ClInclude Include="..\include\chasm\parser\grammar\first_follow.hpp" />
@@ -37,6 +40,7 @@
     <ClInclude Include="..\include\chasm\parser\grammar\unary_instruction.hpp" />
     <ClInclude Include="..\include\chasm\parser\parser.hpp" />
     <ClInclude Include="..\include\chasm\parser\productions.hpp" />
+    <ClInclude Include="fixed_vector.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\include\chasm\parser\grammophone.txt" />
@@ -123,7 +127,7 @@
       <PreprocessorDefinitions>_SILENCE_ALL_CXX17_DEPRECATION_WARNINGS;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpplatest</LanguageStandard>
-      <AdditionalOptions>/WL %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/WL /constexpr:steps 10485760 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -157,7 +161,7 @@
       <PreprocessorDefinitions>_SILENCE_ALL_CXX17_DEPRECATION_WARNINGS;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpplatest</LanguageStandard>
-      <AdditionalOptions>/WL %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/WL /constexpr:steps 10485760 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

@@ -27,9 +27,6 @@
     <ClInclude Include="..\include\chasm\lex\lexer.hpp">
       <Filter>chasm\lex</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\chasm\lex\patterns.hpp">
-      <Filter>chasm\lex</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\chasm\lex\split.hpp">
       <Filter>chasm\lex</Filter>
     </ClInclude>
@@ -70,6 +67,19 @@
       <Filter>chasm\lex\detail</Filter>
     </ClInclude>
     <ClInclude Include="..\include\chasm\parser\parser.hpp">
+      <Filter>chasm\parse</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\chasm\lex\match_token.hpp">
+      <Filter>chasm\lex</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\chasm\lex\detail\is_variable.hpp">
+      <Filter>chasm\lex\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\chasm\chasm.hpp">
+      <Filter>chasm</Filter>
+    </ClInclude>
+    <ClInclude Include="fixed_vector.hpp" />
+    <ClInclude Include="..\include\chasm\parser\ebnf.hpp">
       <Filter>chasm\parse</Filter>
     </ClInclude>
   </ItemGroup>

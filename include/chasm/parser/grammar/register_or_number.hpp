@@ -1,6 +1,7 @@
 #pragma once
 
 #include <array>
+
 #include "../../lex/token.hpp"
 
 namespace chasm::parse::grammar
@@ -10,7 +11,7 @@ namespace chasm::parse::grammar
 	{
 		static constexpr auto first = std::array{
 			lex::symbol::number,
-			lex::symbol::reg,
+			lex::symbol::registr,
 		};
 
 		static constexpr auto follow = std::array{
@@ -24,8 +25,9 @@ namespace chasm::parse::grammar
 		{
 			if (lex::peek(lexer) == lex::symbol::number)
 				lexer.expect(lex::symbol::number);
+				// semantic rule?
 			else
-				lexer.expect(lex::symbol::reg);
+				lexer.expect(lex::symbol::registr);
 		}
 	};
 }

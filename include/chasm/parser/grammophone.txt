@@ -16,6 +16,7 @@ UI -> uo UI_arg .
 NI -> no .
 
 UI_arg -> num_or_r
-| [ num_or_r ] .
+| [ num_or_r ]
+| segment : [ num_or_r ] .
 
-num_or_r -> num | r .
+num_or_r -> num | r | variable .
